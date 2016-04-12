@@ -26,7 +26,7 @@ module.exports =
       default: 500
     "speed":
       type: Number
-      default: 0.8
+      default: 1
 
   data: ->
     viewportHeight: 0
@@ -59,7 +59,7 @@ module.exports =
         @parallaxDistance = Math.floor(@$el.clientWidth*@ratio) - height
       @scrollDistance = @viewportHeight + height*2
       @style.height = height + "px"
-      @processScroll()
+      @$nextTick @processScroll
     processScroll: ->
       rect = @$el.getBoundingClientRect()
       if rect.bottom > 0 and rect.top < @viewportHeight # in viewport

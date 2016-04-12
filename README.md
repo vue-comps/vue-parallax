@@ -33,7 +33,7 @@ For examples see [`dev/`](dev/).
 | ---:| --- | ---| --- |
 | src | String | - | (required) path to image |
 | height | Number | 500 | height of the parallax element |
-| speed | Number | 0.8 | 0 doesn't scroll the image, 1 scrolls through the whole image  |
+| speed | Number | 1 | 0 doesn't scroll the image, 1 scrolls through the whole image  |
 
 
 # Development

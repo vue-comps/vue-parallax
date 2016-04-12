@@ -1,8 +1,8 @@
 <template lang="jade">
-parallax(src="parallax1.jpg")
+parallax(src="http://materializecss.com/images/parallax1.jpg")
 .parallax-between
   a(href="https://github.com/vue-comps/vue-parallax/blob/master/dev/basic.vue") source
-parallax(src="parallax2.jpg")
+parallax(src="http://materializecss.com/images/parallax2.jpg")
 .parallax-between
 .parallax-between
 </template>
