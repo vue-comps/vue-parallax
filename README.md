@@ -23,8 +23,11 @@ components:
 ```
 ```html
 <parallax src="path/to/img">
+  <div slot="loading">loading...</div>
+  <div>content</div>
 </parallax>
 ```
+content will be shown after loading
 
 For examples see [`dev/`](dev/).
 
@@ -35,6 +38,11 @@ For examples see [`dev/`](dev/).
 | height | Number | 500 | height of the parallax element |
 | speed | Number | 1 | 0 doesn't scroll the image, 1 scrolls through the whole image  |
 
+#### Events
+| Name |  description |
+| ---:| --- | ---| --- |
+| image-loaded |  will be called when the image is loaded |
+| loaded |  will be called when the first calculation - after a image is loaded - is finished  |
 
 # Development
 Clone repository.

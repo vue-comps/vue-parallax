@@ -4,7 +4,8 @@ div(
   v-bind:style="style"
   )
   img(v-bind:src="src" v-el:img @load="processSrc" style="position:absolute;visibility:hidden")
-  slot
+  slot(name="loading" v-if="!finished")
+  slot(v-if="finished")
 </template>
 
 <script lang="coffee">
@@ -33,12 +34,13 @@ module.exports =
     parallaxDistance: 0
     scrollDistance: 0
     ratio: 1
+    finished: false
     style:
       position: "relative"
       width: "100%"
       overflow: "hidden"
-      height: 0
-      backgroundImage:"url('#{@src}')"
+      height: @height+"px"
+      backgroundImage:null
       backgroundSize: "100% auto"
       backgroundPositionY: 0
   watch:
@@ -48,6 +50,8 @@ module.exports =
       @viewportHeight = @getViewportSize().height
       @processSrc()
     processSrc: ->
+      @$emit "image-loaded"
+      @finished = false
       @ratio = @$els.img.clientHeight / @$els.img.clientWidth
       @processHeight()
     processHeight: ->
@@ -66,6 +70,10 @@ module.exports =
         percentage = (@viewportHeight - rect.top) / (@scrollDistance)
         percentage = (1-@speed)/2+percentage*@speed
         @style.backgroundPositionY = Math.round( -@parallaxDistance * percentage ) + 'px'
+        unless @finished
+          @style.backgroundImage="url('#{@src}')"
+          @$emit "loaded"
+          @finished = true
 
   compiled: ->
     @onWindowScroll @processScroll

@@ -1,8 +1,10 @@
 <template lang="jade">
 parallax(src="http://materializecss.com/images/parallax1.jpg")
+  .loading(slot="loading") loading...
 .parallax-between
   a(href="https://github.com/vue-comps/vue-parallax/blob/master/dev/basic.vue") source
 parallax(src="http://materializecss.com/images/parallax2.jpg")
+  .loading(slot="loading") loading...
 .parallax-between
 .parallax-between
 </template>
