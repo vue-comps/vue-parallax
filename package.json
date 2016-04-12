@@ -1,7 +1,7 @@
 {
   "name": "vue-parallax",
   "description": "Scrolls a image slower than the window to create a neat optical effect",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "homepage": "https://github.com/vue-comps",
   "author": {
     "name": "Paul Pflugradt",
