@@ -31,18 +31,30 @@ content will be shown after loading
 
 For examples see [`dev/`](dev/).
 
+#### Webpack
+If your assets are organized by webpack, this should work:
+```html
+<parallax src=require('../assets/your-image.jpg')></parallax>
+```
+
 #### Props
-| Name | type | default | description |
-| ---:| --- | ---| --- |
-| src | String | - | (required) path to image |
-| height | Number | 500 | height of the parallax element |
-| speed | Number | 1 | 0 doesn't scroll the image, 1 scrolls through the whole image  |
+Name | type | default | description
+---:| --- | ---| ---
+src | String | - | (required) path to image
+height | Number | 500 | height of the parallax element
+speed | Number | 1 | 0 doesn't scroll the image, 1 scrolls through the whole image
 
 #### Events
-| Name |  description |
-| ---:| --- | ---| --- |
-| image-loaded |  will be called when the image is loaded |
-| loaded |  will be called when the first calculation - after a image is loaded - is finished  |
+Name |  description
+---:| --- | ---| ---
+image-loaded |  will be called when the image is loaded
+loaded |  will be called when the first calculation - after a image is loaded - is finished
+
+## Changelog
+- 1.0.0  
+some cleaning  
+added unit tests  
+now working with firefox  
 
 # Development
 Clone repository.
