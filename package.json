@@ -17,7 +17,7 @@
     "node": "*"
   },
   "dependencies": {
-    "vue-mixins": "^0.2.19"
+    "vue-mixins": "^0.3.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
