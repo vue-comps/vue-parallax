@@ -16,6 +16,7 @@ describe "parallax", ->
       #unloadComp(env)
 
     it "should work", (done) ->
+      @timeout(5000)
       p.$once "loaded", ->
         p.$el.should.have.attr("style").match /background-image: url/
         top = p.$el.getBoundingClientRect().top
@@ -25,8 +26,8 @@ describe "parallax", ->
           scroll 200+top, ->
             p.$el.should.have.attr("style").not.equal style
             style = p.$el.getAttribute("style")
-            p.speed = 0
+            env.speed = 0
             scroll 400+top, ->
               p.$el.should.have.attr("style").not.equal style
-              p.speed = 1
+              env.speed = 1
               done()

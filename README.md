@@ -9,6 +9,8 @@ Scrolls a image slower than the window to create a neat optical effect.
 
 ```sh
 npm install --save-dev vue-parallax
+// vue@1.0
+npm install --save-dev vue-parallax@1
 ```
 or include `build/bundle.js`.
 
@@ -51,6 +53,9 @@ image-loaded |  will be called when the image is loaded
 loaded |  will be called when the first calculation - after a image is loaded - is finished
 
 ## Changelog
+- 2.0.0  
+now compatible with vue 2.0.0  
+
 - 1.0.0  
 some cleaning  
 added unit tests  

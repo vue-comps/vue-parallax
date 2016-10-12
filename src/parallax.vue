@@ -1,11 +1,19 @@
 // out: ..
 <template lang="pug">
 div(
-  v-bind:style="computedStyle"
+  :style="computedStyle",
   style="position:relative; width: 100%; overflow: hidden;background-size: 100% auto"
   )
-  img(v-bind:src="src" v-el:img @load="processSrc" style="position:absolute;visibility:hidden")
-  slot(name="loading" v-if="!finished")
+  img(
+    :src="src",
+    ref="img",
+    @load="processSrc",
+    style="position:absolute;visibility:hidden"
+    )
+  slot(
+    name="loading",
+    v-if="!finished"
+    )
   slot(v-if="finished")
 </template>
 
@@ -28,11 +36,9 @@ module.exports =
     height:
       type: Number
       default: 500
-      coerce: Number
     speed:
       type: Number
       default: 1
-      coerce: Number
 
   computed:
     mergeStyle: ->
@@ -41,6 +47,7 @@ module.exports =
       backgroundPosition: "0 " + Math.round( -@parallaxDistance * @percentage ) + 'px'
     scrollDistance: -> @viewportHeight + @cHeight * 2
     cHeight: ->
+      return null unless @viewportHeight
       width = @$el.clientWidth
       if @height/@ratio > width # image smaller than box
         @parallaxDistance = 0
@@ -63,7 +70,7 @@ module.exports =
     processSrc: ->
       @$emit "image-loaded"
       @finished = false
-      @ratio = @$els.img.clientHeight / @$els.img.clientWidth
+      @ratio = @$refs.img.clientHeight / @$refs.img.clientWidth
       @processScroll()
     processScroll: ->
       rect = @$el.getBoundingClientRect()
@@ -74,8 +81,9 @@ module.exports =
           @$nextTick => @$emit "loaded"
           @finished = true
 
-  compiled: ->
+  mounted: ->
     @onWindowScroll @processScroll
     @onWindowResize @processResize
-    @viewportHeight = @getViewportSize().height
+    @$nextTick ->
+      @viewportHeight = @getViewportSize().height
 </script>
