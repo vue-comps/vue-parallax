@@ -48,12 +48,15 @@ module.exports =
       backgroundSize: "auto " + @backgroundHeight*100 +"%"
     backgroundHeight: -> @imgRatio/@elRatio
     absoluteBackgroundHeight: -> @backgroundHeight*@imgHeight
-    offset: -> (@absoluteBackgroundHeight-@scrollDistance)/2
+    offset: ->
+      offset = (@absoluteBackgroundHeight-@height)/2
+      return offset
 
   data: ->
     scrollDistance: 0
     imgRatio: 1
     elRatio: 1
+    elHeight: 0
     imgHeight: 0
     finished: false
     position: 0
@@ -62,7 +65,7 @@ module.exports =
     processResize: (e) ->
       vpsize = @getViewportSize()
       @scrollDistance = vpsize.height
-      @elRatio = @$el.clientHeight / @$el.clientWidth
+      @elRatio = @height / @$el.clientWidth
       @processScroll() if e?
     processSrc: ->
       @$emit "image-loaded"
