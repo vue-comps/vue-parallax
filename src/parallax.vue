@@ -2,7 +2,7 @@
 <template lang="pug">
 div(
   :style="computedStyle",
-  style="position:relative; width: 100%; overflow: hidden;background-size: 100% auto"
+  style="position:relative; width: 100%; overflow: hidden;"
   )
   img(
     :src="src",
@@ -38,45 +38,42 @@ module.exports =
       default: 500
     speed:
       type: Number
-      default: 1
+      default: 0.2
 
   computed:
     mergeStyle: ->
-      height: @cHeight+"px"
+      height: @height+"px"
       backgroundImage: if @finished then "url('#{@src}')" else null
-      backgroundPosition: "0 " + Math.round( -@parallaxDistance * @percentage ) + 'px'
-    scrollDistance: -> @viewportHeight + @cHeight * 2
-    cHeight: ->
-      return null unless @viewportHeight
-      width = @$el.clientWidth
-      if @height/@ratio > width # image smaller than box
-        @parallaxDistance = 0
-        return Math.floor(width*@ratio)
-      else
-        @parallaxDistance = Math.floor(width*@ratio) - @height
-        return @height
+      backgroundPosition: "center " + Math.round( @position * 100 ) / 100 + 'px'
+      backgroundSize: "auto " + @backgroundHeight*100 +"%"
+    backgroundHeight: -> @imgRatio/@elRatio
+    absoluteBackgroundHeight: -> @backgroundHeight*@imgHeight
+    offset: -> (@absoluteBackgroundHeight-@scrollDistance)/2
 
   data: ->
-    viewportHeight: 0
-    parallaxDistance: 0
-    percentage: 0
-    ratio: 1
+    scrollDistance: 0
+    imgRatio: 1
+    elRatio: 1
+    imgHeight: 0
     finished: false
+    position: 0
 
   methods:
-    processResize: ->
-      @viewportHeight = @getViewportSize().height
-      @processSrc()
+    processResize: (e) ->
+      vpsize = @getViewportSize()
+      @scrollDistance = vpsize.height
+      @elRatio = @$el.clientHeight / @$el.clientWidth
+      @processScroll() if e?
     processSrc: ->
       @$emit "image-loaded"
       @finished = false
-      @ratio = @$refs.img.clientHeight / @$refs.img.clientWidth
+      @imgHeight = @$refs.img.clientHeight
+      @imgRatio = @imgHeight / @$refs.img.clientWidth
       @processScroll()
     processScroll: ->
       rect = @$el.getBoundingClientRect()
-      if rect.bottom > 0 and rect.top < @viewportHeight # in viewport
-        @percentage = (@viewportHeight - rect.top) / (@scrollDistance)
-        @percentage = (1-@speed)/2+@percentage*@speed
+      if rect.bottom > 0 and rect.top < @scrollDistance # in viewport
+        @position = rect.top*(@speed-1) + @offset
         unless @finished
           @$nextTick => @$emit "loaded"
           @finished = true
@@ -84,6 +81,5 @@ module.exports =
   mounted: ->
     @onWindowScroll @processScroll
     @onWindowResize @processResize
-    @$nextTick ->
-      @viewportHeight = @getViewportSize().height
+    @$nextTick @processResize
 </script>

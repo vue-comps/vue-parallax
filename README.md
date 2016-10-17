@@ -44,7 +44,7 @@ Name | type | default | description
 ---:| --- | ---| ---
 src | String | - | (required) path to image
 height | Number | 500 | height of the parallax element
-speed | Number | 1 | 0 doesn't scroll the image, 1 scrolls through the whole image
+speed | Number | 0.2 | 0.0 means the image will appear fixed in place, and 1.0 the image will flow at the same speed as the page content.
 
 #### Events
 Name |  description
