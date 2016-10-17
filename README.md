@@ -53,6 +53,12 @@ image-loaded |  will be called when the image is loaded
 loaded |  will be called when the first calculation - after a image is loaded - is finished
 
 ## Changelog
+- 2.1.1  
+bugfix  
+
+- 2.1.0  
+changed way the picture moves, now in line with other parallax implementations  
+
 - 2.0.0  
 now compatible with vue 2.0.0  
 
