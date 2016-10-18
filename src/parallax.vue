@@ -46,17 +46,23 @@ module.exports =
       backgroundImage: if @finished then "url('#{@src}')" else null
       backgroundPosition: "center " + Math.round( @position * 100 ) / 100 + 'px'
       backgroundSize: "auto " + @backgroundHeight*100 +"%"
-    backgroundHeight: -> @imgRatio/@elRatio
+    backgroundHeight: ->
+      ratio = @imgRatio/@elRatio
+      if ratio*@height >= @vpHeight
+        return ratio
+      else
+        return @vpHeight/@height
+
     absoluteBackgroundHeight: -> @backgroundHeight*@imgHeight
     offset: ->
       offset = (@absoluteBackgroundHeight-@height)/2
       return offset
 
   data: ->
-    scrollDistance: 0
+    vpHeight: 0
     imgRatio: 1
     elRatio: 1
-    elHeight: 0
+    vpRatio: 1
     imgHeight: 0
     finished: false
     position: 0
@@ -64,7 +70,8 @@ module.exports =
   methods:
     processResize: (e) ->
       vpsize = @getViewportSize()
-      @scrollDistance = vpsize.height
+      @vpRatio = vpsize.height / vpsize.width
+      @vpHeight = vpsize.height
       @elRatio = @height / @$el.clientWidth
       @processScroll() if e?
     processSrc: ->
@@ -75,7 +82,8 @@ module.exports =
       @processScroll()
     processScroll: ->
       rect = @$el.getBoundingClientRect()
-      if rect.bottom > 0 and rect.top < @scrollDistance # in viewport
+      if rect.bottom > 0 and rect.top < @vpHeight # in viewport
+        console.log rect.top
         @position = rect.top*(@speed-1) + @offset
         unless @finished
           @$nextTick => @$emit "loaded"
