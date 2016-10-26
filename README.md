@@ -51,6 +51,9 @@ image-loaded |  will be called when the image is loaded
 loaded |  will be called when the first calculation - after a image is loaded - is finished
 
 ## Changelog
+- 1.1.1  
+bugfix in portrait mode  
+
 - 1.1.0  
 changed way the picture moves, now in line with other parallax implementations  
 now working on devices in portrait mode  

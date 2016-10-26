@@ -43,16 +43,15 @@ module.exports =
     backgroundHeight: ->
       ratio = @imgRatio/@elRatio
       if ratio*@height >= @vpHeight
+        @offset = (ratio*@imgHeight-@height)/2
         return ratio
       else
+        @offset = 0
         return @vpHeight/@height
 
-    absoluteBackgroundHeight: -> @backgroundHeight*@imgHeight
-    offset: ->
-      offset = (@absoluteBackgroundHeight-@height)/2
-      return offset
 
   data: ->
+    offset: 0
     vpHeight: 0
     imgRatio: 1
     elRatio: 1
