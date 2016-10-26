@@ -2,7 +2,7 @@
 <template lang="pug">
 div(
   v-bind:style="computedStyle"
-  style="position:relative; width: 100%; overflow: hidden;background-size: 100% auto"
+  style="position:relative; width: 100%; overflow: hidden"
   )
   img(v-bind:src="src" v-el:img @load="processSrc" style="position:absolute;visibility:hidden")
   slot(name="loading" v-if="!finished")
@@ -31,45 +31,53 @@ module.exports =
       coerce: Number
     speed:
       type: Number
-      default: 1
+      default: 0.2
       coerce: Number
 
   computed:
     mergeStyle: ->
-      height: @cHeight+"px"
+      height: @height+"px"
       backgroundImage: if @finished then "url('#{@src}')" else null
-      backgroundPosition: "0 " + Math.round( -@parallaxDistance * @percentage ) + 'px'
-    scrollDistance: -> @viewportHeight + @cHeight * 2
-    cHeight: ->
-      width = @$el.clientWidth
-      if @height/@ratio > width # image smaller than box
-        @parallaxDistance = 0
-        return Math.floor(width*@ratio)
+      backgroundPosition: "center " + Math.round( @position * 100 ) / 100 + 'px'
+      backgroundSize: "auto " + @backgroundHeight*100 +"%"
+    backgroundHeight: ->
+      ratio = @imgRatio/@elRatio
+      if ratio*@height >= @vpHeight
+        return ratio
       else
-        @parallaxDistance = Math.floor(width*@ratio) - @height
-        return @height
+        return @vpHeight/@height
+
+    absoluteBackgroundHeight: -> @backgroundHeight*@imgHeight
+    offset: ->
+      offset = (@absoluteBackgroundHeight-@height)/2
+      return offset
 
   data: ->
-    viewportHeight: 0
-    parallaxDistance: 0
-    percentage: 0
-    ratio: 1
+    vpHeight: 0
+    imgRatio: 1
+    elRatio: 1
+    vpRatio: 1
+    imgHeight: 0
     finished: false
+    position: 0
 
   methods:
-    processResize: ->
-      @viewportHeight = @getViewportSize().height
-      @processSrc()
+    processResize: (e) ->
+      vpsize = @getViewportSize()
+      @vpRatio = vpsize.height / vpsize.width
+      @vpHeight = vpsize.height
+      @elRatio = @height / @$el.clientWidth
+      @processScroll() if e?
     processSrc: ->
       @$emit "image-loaded"
       @finished = false
-      @ratio = @$els.img.clientHeight / @$els.img.clientWidth
+      @imgHeight = @$els.img.clientHeight
+      @imgRatio = @imgHeight / @$els.img.clientWidth
       @processScroll()
     processScroll: ->
       rect = @$el.getBoundingClientRect()
-      if rect.bottom > 0 and rect.top < @viewportHeight # in viewport
-        @percentage = (@viewportHeight - rect.top) / (@scrollDistance)
-        @percentage = (1-@speed)/2+@percentage*@speed
+      if rect.bottom > 0 and rect.top < @vpHeight # in viewport
+        @position = rect.top*(@speed-1) + @offset
         unless @finished
           @$nextTick => @$emit "loaded"
           @finished = true
@@ -77,5 +85,6 @@ module.exports =
   compiled: ->
     @onWindowScroll @processScroll
     @onWindowResize @processResize
-    @viewportHeight = @getViewportSize().height
+  ready: ->
+    @processResize()
 </script>

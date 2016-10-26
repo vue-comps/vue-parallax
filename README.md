@@ -8,7 +8,7 @@ Scrolls a image slower than the window to create a neat optical effect.
 # Install
 
 ```sh
-npm install --save-dev vue-parallax
+npm install --save-dev vue-parallax@1
 ```
 or include `build/bundle.js`.
 
@@ -42,7 +42,7 @@ Name | type | default | description
 ---:| --- | ---| ---
 src | String | - | (required) path to image
 height | Number | 500 | height of the parallax element
-speed | Number | 1 | 0 doesn't scroll the image, 1 scrolls through the whole image
+speed | Number | 0.2 | 0.0 means the image will appear fixed in place, and 1.0 the image will flow at the same speed as the page content.
 
 #### Events
 Name |  description
@@ -51,6 +51,10 @@ image-loaded |  will be called when the image is loaded
 loaded |  will be called when the first calculation - after a image is loaded - is finished
 
 ## Changelog
+- 1.1.0  
+changed way the picture moves, now in line with other parallax implementations  
+now working on devices in portrait mode  
+
 - 1.0.0  
 some cleaning  
 added unit tests  

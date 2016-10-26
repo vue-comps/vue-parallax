@@ -16,6 +16,7 @@ describe "parallax", ->
       #unloadComp(env)
 
     it "should work", (done) ->
+      @timeout(5000)
       p.$once "loaded", ->
         p.$el.should.have.attr("style").match /background-image: url/
         top = p.$el.getBoundingClientRect().top
