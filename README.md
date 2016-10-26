@@ -59,6 +59,9 @@ image-loaded |  will be called when the image is loaded
 loaded |  will be called when the first calculation - after a image is loaded - is finished
 
 ## Changelog
+- 2.1.3  
+bugfix in portrait mode  
+
 - 2.1.2  
 now working on devices in portrait mode
 

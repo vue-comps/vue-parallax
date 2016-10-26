@@ -49,16 +49,14 @@ module.exports =
     backgroundHeight: ->
       ratio = @imgRatio/@elRatio
       if ratio*@height >= @vpHeight
+        @offset = (ratio*@imgHeight-@height)/2
         return ratio
       else
+        @offset = 0
         return @vpHeight/@height
 
-    absoluteBackgroundHeight: -> @backgroundHeight*@imgHeight
-    offset: ->
-      offset = (@absoluteBackgroundHeight-@height)/2
-      return offset
-
   data: ->
+    offset: 0
     vpHeight: 0
     imgRatio: 1
     elRatio: 1
@@ -83,7 +81,6 @@ module.exports =
     processScroll: ->
       rect = @$el.getBoundingClientRect()
       if rect.bottom > 0 and rect.top < @vpHeight # in viewport
-        console.log rect.top
         @position = rect.top*(@speed-1) + @offset
         unless @finished
           @$nextTick => @$emit "loaded"
