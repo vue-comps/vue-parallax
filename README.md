@@ -33,7 +33,7 @@ content will be shown after loading
 
 For examples see [`dev/`](dev/).
 
-#### Module build failed: SyntaxError: 'with' in strict mode
+### ERROR: Module build failed: SyntaxError: 'with' in strict mode
 Currently [buble](https://gitlab.com/Rich-Harris/buble) is injecting `strict` mode in all processed js files. The down to ES5 compiled component contains `with`, which is forbidden in `strict` mode.
 Buble is used, for example, in rollup, which is used in laravel.
 
